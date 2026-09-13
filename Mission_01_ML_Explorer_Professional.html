@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Machine Learning Marathon" />
+  <title>ML Mission 01 — Can Machines Learn?</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">
+:root {
+--navy: #16324F;
+--blue: #2F6690;
+--mint: #EAF7F1;
+--gold: #F4C95D;
+--paper: #FAFBFC;
+--ink: #1F2933;
+--border: #D8E0E8;
+}
+html {
+scroll-behavior: smooth;
+}
+body {
+max-width: 1100px;
+margin: 0 auto;
+padding: 32px 44px 80px;
+background: var(--paper);
+color: var(--ink);
+font-family: "Segoe UI", Arial, sans-serif;
+line-height: 1.65;
+}
+h1, h2, h3, h4 {
+color: var(--navy);
+}
+h1 {
+border-bottom: 4px solid var(--gold);
+padding-bottom: .35rem;
+margin-top: 2.4rem;
+}
+h2 {
+border-bottom: 1px solid var(--border);
+padding-bottom: .25rem;
+margin-top: 2rem;
+}
+h3 {
+margin-top: 1.4rem;
+}
+p, li {
+font-size: 1rem;
+}
+a {
+color: var(--blue);
+}
+table {
+width: 100%;
+border-collapse: collapse;
+margin: 1rem 0 1.5rem;
+}
+th {
+background: var(--navy);
+color: white;
+}
+th, td {
+border: 1px solid var(--border);
+padding: 8px 10px;
+vertical-align: top;
+}
+pre {
+overflow-x: auto;
+padding: 14px 16px;
+background: #F1F4F7;
+border: 1px solid var(--border);
+border-radius: 8px;
+}
+code {
+font-family: Consolas, "Courier New", monospace;
+}
+blockquote {
+background: #F2F7FB;
+border-left: 5px solid var(--blue);
+padding: 10px 14px;
+margin: 1rem 0;
+}
+.callout {
+border-radius: 10px;
+padding: 14px 16px;
+margin: 16px 0;
+border: 1px solid var(--border);
+}
+.mission {
+background: #EEF6FF;
+border-left: 6px solid var(--blue);
+}
+.think {
+background: #FFF9E8;
+border-left: 6px solid var(--gold);
+}
+.success {
+background: var(--mint);
+border-left: 6px solid #4B9B78;
+}
+.challenge {
+background: #F7F1FF;
+border-left: 6px solid #7A5AA6;
+}
+.danger {
+background: #FFF0F0;
+border-left: 6px solid #B84A4A;
+}
+.badge {
+display: inline-block;
+background: var(--navy);
+color: white;
+padding: 5px 10px;
+border-radius: 999px;
+font-weight: 700;
+}
+.cover {
+background: linear-gradient(135deg, #16324F, #2F6690);
+color: white;
+padding: 34px 28px;
+border-radius: 16px;
+margin: 30px 0 24px;
+break-before: page;
+page-break-before: always;
+}
+.cover:first-of-type {
+break-before: auto;
+page-break-before: auto;
+}
+.cover h1,
+.cover h2,
+.cover h3 {
+color: white;
+border: 0;
+margin: .2rem 0;
+}
+.cover .gold {
+color: var(--gold);
+font-weight: 700;
+}
+#TOC {
+background: white;
+border: 1px solid var(--border);
+border-radius: 12px;
+padding: 20px 28px;
+margin: 30px 0 40px;
+}
+#TOC ul {
+list-style: none;
+padding-left: 1rem;
+}
+#TOC > ul {
+padding-left: 0;
+}
+
+@media print {
+body {
+max-width: none;
+padding: 0;
+background: white;
+font-size: 10.5pt;
+}
+.cover {
+break-before: page;
+page-break-before: always;
+min-height: 75vh;
+}
+pre, table, blockquote, .callout {
+break-inside: avoid;
+page-break-inside: avoid;
+}
+h1, h2, h3 {
+break-after: avoid;
+page-break-after: avoid;
+}
+a {
+color: inherit;
+text-decoration: none;
+}
+@page {
+size: A4;
+margin: 18mm 16mm 18mm 16mm;
+}
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ML Mission 01 — Can Machines Learn?</h1>
+<p class="subtitle">Your First Step into Machine Learning</p>
+<p class="author">Machine Learning Marathon</p>
+</header>
+<style>
+:root{
+--navy:#16324F;
+--blue:#2F6690;
+--sky:#D9EAF7;
+--mint:#EAF7F1;
+--gold:#F4C95D;
+--paper:#FAFBFC;
+--ink:#1F2933;
+--muted:#5F6C7B;
+--border:#D8E0E8;
+}
+body{
+background:var(--paper);
+color:var(--ink);
+font-family: "Segoe UI", Arial, sans-serif;
+line-height:1.65;
+}
+h1,h2,h3{
+color:var(--navy);
+}
+h1{
+border-bottom:4px solid var(--gold);
+padding-bottom:.35rem;
+}
+h2{
+border-bottom:1px solid var(--border);
+padding-bottom:.25rem;
+margin-top:2rem;
+}
+table{
+width:100%;
+border-collapse:collapse;
+}
+th{
+background:var(--navy);
+color:white;
+}
+th,td{
+border:1px solid var(--border);
+padding:8px 10px;
+}
+blockquote{
+background:#F2F7FB;
+border-left:5px solid var(--blue);
+padding:10px 14px;
+margin:1rem 0;
+}
+.callout{
+border-radius:10px;
+padding:14px 16px;
+margin:16px 0;
+border:1px solid var(--border);
+}
+.mission{ background:#EEF6FF; border-left:6px solid var(--blue); }
+.think{ background:#FFF9E8; border-left:6px solid var(--gold); }
+.success{ background:var(--mint); border-left:6px solid #4B9B78; }
+.challenge{ background:#F7F1FF; border-left:6px solid #7A5AA6; }
+.badge{
+display:inline-block;
+background:var(--navy);
+color:white;
+padding:5px 10px;
+border-radius:999px;
+font-weight:700;
+}
+.small{ color:var(--muted); font-size:.95em; }
+.cover{
+background:linear-gradient(135deg,#16324F,#2F6690);
+color:white;
+padding:34px 28px;
+border-radius:16px;
+margin-bottom:24px;
+}
+.cover h1,.cover h2,.cover h3{ color:white; border:0; margin:.2rem 0; }
+.cover .gold{ color:#F4C95D; font-weight:700; }
+</style>
+<section id="ml-mission-01" class="cover">
+<h1>ML MISSION 01</h1>
+<h2 id="can-machines-learn">Can Machines Learn?</h2>
+<h3 id="your-first-step-into-machine-learning"><em>Your First Step into
+Machine Learning</em></h3>
+<p><strong>Stage 1 — Understand the Data</strong></p>
+<p><span class="badge">🏅 Achievement: ML Explorer</span></p>
+<p class="gold">
+READ · THINK · BUILD · PROVE · UNLOCK
+</p>
+</section>
+<section id="big-question" class="callout mission">
+<h3>🎯 BIG QUESTION</h3>
+<p><strong>Apakah semua sistem yang terlihat “cerdas” benar-benar
+membutuhkan Machine Learning?</strong></p>
+</section>
+<hr />
+<h2 id="mission-brief">1. Mission Brief</h2>
+<p>Selamat datang di <strong>Machine Learning Marathon</strong>.</p>
+<p>Pada semester ini, Anda tidak hanya akan mempelajari definisi,
+algoritma, dan rumus. Anda akan:</p>
+<ul>
+<li>membaca dan memahami data;</li>
+<li>membangun model Machine Learning;</li>
+<li>menguji dan mengevaluasi model;</li>
+<li>menjalankan inference pada Raspberry Pi;</li>
+<li>membawa model ke perangkat embedded;</li>
+<li>dan mengintegrasikan Machine Learning dengan sensor serta
+aktuator.</li>
+</ul>
+<p>Namun sebelum mulai menulis kode, kita perlu menjawab satu pertanyaan
+mendasar:</p>
+<blockquote>
+<p><strong>Kapan sebuah masalah memang layak diselesaikan menggunakan
+Machine Learning?</strong></p>
+</blockquote>
+<p>Mission pertama ini menjadi titik awal perjalanan Anda.</p>
+<hr />
+<h2 id="learning-outcomes">2. Learning Outcomes</h2>
+<p>Setelah menyelesaikan mission ini, Anda diharapkan mampu:</p>
+<ol type="1">
+<li>menjelaskan hubungan <strong>Artificial Intelligence, Machine
+Learning, dan Deep Learning</strong>;</li>
+<li>membedakan sistem <strong>rule-based</strong> dan sistem berbasis
+<strong>Machine Learning</strong>;</li>
+<li>menjelaskan istilah <strong>dataset, sample, feature, label,
+training, model, inference</strong>, dan
+<strong>prediction</strong>;</li>
+<li>membedakan secara umum <strong>supervised learning</strong> dan
+<strong>unsupervised learning</strong>;</li>
+<li>mengidentifikasi masalah yang cocok dan tidak cocok diselesaikan
+dengan ML;</li>
+<li>menjalankan eksperimen ML pertama menggunakan Python;</li>
+<li>menjelaskan hasil model menggunakan kata-kata sendiri.</li>
+</ol>
+<hr />
+<h1 id="before-you-start">3. Before You Start</h1>
+<section id="reading-goal" class="callout think">
+<h3>📖 Reading Goal</h3>
+<p>Tidak perlu menghafalkan semua istilah. Fokus pada <strong>ide dasar
+dan hubungan antar-konsep</strong>.</p>
+</section>
+<h2 id="artificial-intelligence">3.1 Artificial Intelligence</h2>
+<p><strong>Artificial Intelligence (AI)</strong> adalah bidang yang
+mempelajari bagaimana membuat komputer atau mesin mampu melakukan tugas
+yang biasanya membutuhkan kecerdasan manusia.</p>
+<p>Contohnya:</p>
+<ul>
+<li>mengenali wajah;</li>
+<li>memahami suara;</li>
+<li>menerjemahkan bahasa;</li>
+<li>mendeteksi kerusakan mesin;</li>
+<li>memberi rekomendasi;</li>
+<li>membantu pengambilan keputusan.</li>
+</ul>
+<p>Namun, <strong>tidak semua AI menggunakan Machine
+Learning</strong>.</p>
+<p>Sebuah sistem dapat terlihat cerdas karena mengikuti aturan yang
+telah dibuat manusia.</p>
+<pre class="text"><code>IF temperature &gt; 30 °C
+THEN fan = ON
+ELSE fan = OFF</code></pre>
+<p>Sistem tersebut dapat mengambil keputusan, tetapi tidak belajar dari
+data.</p>
+<hr />
+<h2 id="machine-learning">3.2 Machine Learning</h2>
+<p><strong>Machine Learning (ML)</strong> adalah bagian dari AI yang
+memungkinkan komputer mempelajari pola dari data sehingga dapat membuat
+prediksi atau keputusan tanpa setiap aturan ditulis secara
+eksplisit.</p>
+<h3 id="rule-based">Rule-Based</h3>
+<pre class="text"><code>IF vibration &gt; 1.5
+AND temperature &gt; 60
+THEN machine_condition = FAULT</code></pre>
+<p>Aturan dibuat oleh manusia.</p>
+<h3 id="machine-learning-1">Machine Learning</h3>
+<p>Kita memberikan contoh kepada komputer:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Temperature</th>
+<th style="text-align: right;">Vibration</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">0.20</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0.25</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">1.40</td>
+<td>Fault</td>
+</tr>
+<tr>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">1.80</td>
+<td>Fault</td>
+</tr>
+</tbody>
+</table>
+<p>Komputer kemudian mempelajari pola hubungan antara input dan kondisi
+mesin.</p>
+<hr />
+<h2 id="deep-learning">3.3 Deep Learning</h2>
+<p><strong>Deep Learning (DL)</strong> adalah bagian dari Machine
+Learning yang menggunakan jaringan saraf tiruan dengan banyak
+lapisan.</p>
+<pre class="text"><code>Artificial Intelligence
+        ↓
+Machine Learning
+        ↓
+Deep Learning</code></pre>
+<section id="remember" class="callout success">
+<h3>💡 Remember</h3>
+<p>Kita tidak akan langsung mengejar model yang kompleks.<br />
+Kita mulai dari memahami <strong>masalah, data, dan alur pembelajaran
+mesin</strong>.</p>
+</section>
+<hr />
+<h1 id="how-does-a-machine-learn">4. How Does a Machine Learn?</h1>
+<pre class="text"><code>DATA
+  ↓
+LEARNING ALGORITHM
+  ↓
+MODEL
+  ↓
+NEW DATA
+  ↓
+PREDICTION</code></pre>
+<p>Contoh:</p>
+<pre class="text"><code>Temperature + Vibration + Current
+                ↓
+        Machine Learning
+                ↓
+          Normal / Fault</code></pre>
+<p>Model tidak “berpikir” seperti manusia. Model mencari <strong>pola
+matematis</strong> dari data yang diberikan.</p>
+<hr />
+<h1 id="essential-ml-vocabulary">5. Essential ML Vocabulary</h1>
+<table>
+<thead>
+<tr>
+<th>Istilah</th>
+<th>Arti Sederhana</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dataset</strong></td>
+<td>Kumpulan data untuk proses Machine Learning</td>
+</tr>
+<tr>
+<td><strong>Sample</strong></td>
+<td>Satu contoh atau satu baris data</td>
+</tr>
+<tr>
+<td><strong>Feature</strong></td>
+<td>Variabel masukan yang digunakan model</td>
+</tr>
+<tr>
+<td><strong>Label / Target</strong></td>
+<td>Jawaban atau keluaran yang dipelajari</td>
+</tr>
+<tr>
+<td><strong>Training</strong></td>
+<td>Proses model belajar dari data</td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>Hasil proses pembelajaran</td>
+</tr>
+<tr>
+<td><strong>Inference</strong></td>
+<td>Menggunakan model yang sudah dilatih pada data baru</td>
+</tr>
+<tr>
+<td><strong>Prediction</strong></td>
+<td>Keluaran yang dihasilkan model</td>
+</tr>
+</tbody>
+</table>
+<h3 id="contoh">Contoh</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Temperature</th>
+<th style="text-align: right;">Vibration</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0.25</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">1.40</td>
+<td>Fault</td>
+</tr>
+</tbody>
+</table>
+<pre class="text"><code>Features : Temperature, Vibration
+Label    : Condition</code></pre>
+<hr />
+<h1 id="supervised-and-unsupervised-learning">6. Supervised and
+Unsupervised Learning</h1>
+<h2 id="supervised-learning">6.1 Supervised Learning</h2>
+<p>Pada <strong>supervised learning</strong>, data training memiliki
+target atau label.</p>
+<h3 id="regression">Regression</h3>
+<p>Output berupa <strong>nilai kontinu</strong>.</p>
+<pre class="text"><code>Temperature + Humidity
+        ↓
+       Model
+        ↓
+Predicted Power = 125.4 W</code></pre>
+<h3 id="classification">Classification</h3>
+<p>Output berupa <strong>kategori</strong>.</p>
+<pre class="text"><code>Temperature + Vibration
+        ↓
+       Model
+        ↓
+       FAULT</code></pre>
+<h2 id="unsupervised-learning">6.2 Unsupervised Learning</h2>
+<p>Pada <strong>unsupervised learning</strong>, data tidak memiliki
+label yang sudah diberikan.</p>
+<p>Model mencoba mencari pola atau kelompok.</p>
+<pre class="text"><code>Sensor Data
+    ↓
+Clustering
+    ↓
+Group A / Group B / Group C</code></pre>
+<hr />
+<h1 id="think-first-is-it-really-machine-learning">7. THINK FIRST — Is
+It Really Machine Learning?</h1>
+<section id="pair-discussion" class="callout think">
+<h3>🧠 Pair Discussion</h3>
+<p>Diskusikan bersama pasangan Anda.<br />
+Pilih: <strong>Rule-Based</strong>, <strong>Machine Learning</strong>,
+atau <strong>Bisa Keduanya</strong>.</p>
+</section>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: right;">No.</th>
+<th>Kasus</th>
+<th>Pilihan</th>
+<th>Alasan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>Lampu menyala jika intensitas cahaya &lt; 300 lux</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>Kipas menyala jika suhu &gt; 30 °C</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>Sistem mengenali kondisi motor dari temperatur, arus, dan
+getaran</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>Kamera menentukan apakah objek adalah kucing atau anjing</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>Pompa berhenti jika tinggi air &gt; 90 cm</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td>Sistem memperkirakan kemungkinan kerusakan motor dari riwayat
+sensor</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td>Alarm berbunyi setiap pukul 07.00</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td>Sistem mengelompokkan pola konsumsi energi pelanggan</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="diskusikan">Diskusikan</h3>
+<ol type="1">
+<li>Kasus mana yang tidak membutuhkan Machine Learning?</li>
+<li>Mengapa aturan sederhana kadang lebih baik?</li>
+<li>Kapan Machine Learning menjadi lebih menarik?</li>
+</ol>
+<hr />
+<h1 id="mini-challenge-human-classifier">8. MINI CHALLENGE — Human
+Classifier</h1>
+<p>Perhatikan data berikut.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Temperature (°C)</th>
+<th style="text-align: right;">Vibration</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">0.20</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0.30</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">0.40</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">1.20</td>
+<td>Fault</td>
+</tr>
+<tr>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">1.50</td>
+<td>Fault</td>
+</tr>
+<tr>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">1.90</td>
+<td>Fault</td>
+</tr>
+</tbody>
+</table>
+<p>Data baru:</p>
+<pre class="text"><code>Temperature = 62 °C
+Vibration   = 1.40</code></pre>
+<p><strong>Prediction Anda:</strong> ______________________</p>
+<p><strong>Alasan:</strong></p>
+<p>……………………………………………………………………</p>
+<p>……………………………………………………………………</p>
+<section id="key-insight" class="callout success">
+<h3>💡 Key Insight</h3>
+<p>Tanpa sadar, Anda baru saja mencoba mengenali <strong>pola dari
+data</strong>.<br />
+Machine Learning melakukan hal serupa dengan pendekatan matematis dan
+algoritmik.</p>
+</section>
+<hr />
+<h1 id="guided-exploration-your-first-ml-model">9. Guided Exploration —
+Your First ML Model</h1>
+<p>Pada eksperimen ini kita menggunakan Python dan
+<code>scikit-learn</code>.</p>
+<blockquote>
+<p><strong>Jangan hanya menyalin kode. Baca setiap bagian dan pahami apa
+yang sedang dilakukan.</strong></p>
+</blockquote>
+<h2 id="import-library">9.1 Import Library</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span></code></pre></div>
+<h2 id="prepare-the-data">9.2 Prepare the Data</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">31</span>, <span class="fl">0.20</span>],</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">35</span>, <span class="fl">0.30</span>],</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">38</span>, <span class="fl">0.40</span>],</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">60</span>, <span class="fl">1.20</span>],</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">65</span>, <span class="fl">1.50</span>],</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">72</span>, <span class="fl">1.90</span>]</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array([</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Normal&quot;</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Normal&quot;</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Normal&quot;</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Fault&quot;</span>,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Fault&quot;</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Fault&quot;</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>])</span></code></pre></div>
+<pre class="text"><code>X = features
+y = labels</code></pre>
+<h2 id="create-the-model">9.3 Create the Model</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span><span class="dv">3</span>)</span></code></pre></div>
+<h2 id="train-the-model">9.4 Train the Model</h2>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>model.fit(X, y)</span></code></pre></div>
+<h2 id="perform-inference">9.5 Perform Inference</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>new_data <span class="op">=</span> np.array([</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">62</span>, <span class="fl">1.40</span>]</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>prediction <span class="op">=</span> model.predict(new_data)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Prediction:&quot;</span>, prediction[<span class="dv">0</span>])</span></code></pre></div>
+<p>Bandingkan hasil komputer dengan prediksi manual Anda.</p>
+<hr />
+<h1 id="observe-and-experiment">10. Observe and Experiment</h1>
+<table>
+<thead>
+<tr>
+<th>Experiment</th>
+<th style="text-align: right;">Temperature</th>
+<th style="text-align: right;">Vibration</th>
+<th>Prediction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0.25</td>
+<td></td>
+</tr>
+<tr>
+<td>B</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">1.70</td>
+<td></td>
+</tr>
+<tr>
+<td>C</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0.80</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="pertanyaan">Pertanyaan</h3>
+<ol type="1">
+<li>Data mana yang paling mudah diprediksi?</li>
+<li>Data mana yang terasa ambigu?</li>
+<li>Mengapa data di antara kelompok Normal dan Fault lebih sulit
+ditentukan?</li>
+</ol>
+<hr />
+<h1 id="your-mission">11. YOUR MISSION 🚀</h1>
+<section id="mission-scenario" class="callout mission">
+<h3>Mission Scenario</h3>
+<p>Sebuah sistem monitoring mesin menggunakan tiga sensor:</p>
+<ul>
+<li><strong>temperature</strong></li>
+<li><strong>vibration</strong></li>
+<li><strong>current</strong></li>
+</ul>
+<p>Tugas tim Anda adalah membuat model sederhana untuk memprediksi
+kondisi mesin.</p>
+</section>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Temperature</th>
+<th style="text-align: right;">Vibration</th>
+<th style="text-align: right;">Current</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">1.8</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">2.0</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">2.2</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">2.5</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">1.10</td>
+<td style="text-align: right;">3.6</td>
+<td>Fault</td>
+</tr>
+<tr>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">1.35</td>
+<td style="text-align: right;">4.0</td>
+<td>Fault</td>
+</tr>
+<tr>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">1.60</td>
+<td style="text-align: right;">4.5</td>
+<td>Fault</td>
+</tr>
+<tr>
+<td style="text-align: right;">74</td>
+<td style="text-align: right;">1.90</td>
+<td style="text-align: right;">5.0</td>
+<td>Fault</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mission-requirements">Mission Requirements</h3>
+<ol type="1">
+<li>Tentukan <strong>feature</strong> dan <strong>label</strong>.</li>
+<li>Tuliskan dataset ke Python.</li>
+<li>Buat model classification sederhana.</li>
+<li>Lakukan training.</li>
+<li>Prediksi data berikut:</li>
+</ol>
+<pre class="text"><code>Data A = [36, 0.30, 2.1]
+Data B = [66, 1.50, 4.3]
+Data C = [50, 0.80, 3.0]</code></pre>
+<ol start="6" type="1">
+<li>Catat hasil prediction.</li>
+<li>Jelaskan apakah hasil tersebut masuk akal.</li>
+</ol>
+<h3 id="mission-report">Mission Report</h3>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Prediction</th>
+<th>Masuk Akal?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>B</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>C</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="challenge">12. CHALLENGE+ ⚡</h1>
+<section id="untuk-tim-yang-selesai-lebih-cepat" class="callout challenge">
+<h3>Untuk tim yang selesai lebih cepat</h3>
+<p>Challenge ini <strong>opsional</strong> dan digunakan untuk
+memperdalam eksperimen.</p>
+</section>
+<h3 id="a.-change-the-data">A. Change the Data</h3>
+<p>Tambahkan dua sample baru. Apakah prediction Data C berubah?</p>
+<h3 id="b.-change-the-model">B. Change the Model</h3>
+<p>Bandingkan:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>n_neighbors<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>n_neighbors<span class="op">=</span><span class="dv">3</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>n_neighbors<span class="op">=</span><span class="dv">5</span></span></code></pre></div>
+<p>Apa yang berubah?</p>
+<h3 id="c.-remove-one-feature">C. Remove One Feature</h3>
+<p>Hapus <code>current</code> dan gunakan hanya <code>temperature</code>
+serta <code>vibration</code>.</p>
+<p>Apakah prediction berubah?</p>
+<hr />
+<h1 id="prove-it">13. PROVE IT ✅</h1>
+<section id="mission-belum-selesai-hanya-karena-program-berjalan." class="callout success">
+<h3>Mission belum selesai hanya karena program berjalan.</h3>
+<p>Untuk mendapatkan badge, Anda harus mampu <strong>BUILD, EXPLAIN, dan
+PROVE</strong>.</p>
+</section>
+<p>Dosen/asisten dapat memilih pertanyaan secara acak:</p>
+<ol type="1">
+<li>Mana feature pada project Anda?</li>
+<li>Mana label?</li>
+<li>Tunjukkan bagian kode yang melakukan training.</li>
+<li>Tunjukkan bagian kode yang melakukan inference.</li>
+<li>Apa perbedaan training dan inference?</li>
+<li>Mengapa project ini termasuk classification?</li>
+<li>Apa yang terjadi jika salah satu feature dihilangkan?</li>
+<li>Ubah satu input dan tunjukkan prediction baru.</li>
+<li>Apakah program ini menggunakan aturan IF–THEN secara eksplisit?</li>
+<li>Kapan rule-based system lebih baik daripada Machine Learning?</li>
+</ol>
+<hr />
+<h1 id="achievement-criteria">14. Achievement Criteria</h1>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Kriteria</th>
+<th>Bukti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BUILD</strong></td>
+<td>Program berjalan dan menghasilkan prediction</td>
+</tr>
+<tr>
+<td><strong>EXPLAIN</strong></td>
+<td>Mampu menjelaskan feature, label, training, model, inference</td>
+</tr>
+<tr>
+<td><strong>PROVE</strong></td>
+<td>Mampu mengubah input dan menjelaskan perubahan hasil</td>
+</tr>
+</tbody>
+</table>
+<pre class="text"><code>BUILD + EXPLAIN + PROVE
+            ↓
+   ACHIEVEMENT UNLOCKED</code></pre>
+<hr />
+<h1 id="reflection">15. Reflection</h1>
+<h3 id="apa-hal-paling-penting-yang-anda-pelajari-hari-ini">1. Apa hal
+paling penting yang Anda pelajari hari ini?</h3>
+<p>……………………………………………………………………</p>
+<h3 id="apa-perbedaan-utama-rule-based-system-dan-machine-learning">2.
+Apa perbedaan utama rule-based system dan Machine Learning?</h3>
+<p>……………………………………………………………………</p>
+<h3 id="bagian-mana-yang-masih-membingungkan">3. Bagian mana yang masih
+membingungkan?</h3>
+<p>……………………………………………………………………</p>
+<h3 id="berikan-satu-contoh-masalah-teknik-elektro-yang-dapat-diselesaikan-menggunakan-ml.">4.
+Berikan satu contoh masalah Teknik Elektro yang dapat diselesaikan
+menggunakan ML.</h3>
+<p>……………………………………………………………………</p>
+<hr />
+<h1 id="achievement-unlocked">16. Achievement Unlocked 🏅</h1>
+<section id="ml-explorer" class="callout success">
+<h2>🏅 ML EXPLORER</h2>
+<p><strong>You have entered the world of Machine Learning.</strong></p>
+</section>
+<p><strong>Status</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>COMPLETED</label></li>
+<li><label><input type="checkbox"></input>RETRY</label></li>
+<li><label><input type="checkbox"></input>NOT COMPLETED</label></li>
+</ul>
+<p><strong>Tanggal:</strong> ______________________</p>
+<p><strong>Nama Mahasiswa:</strong> ______________________________</p>
+<p><strong>Partner:</strong> _____________________________________</p>
+<p><strong>Paraf Dosen/Asisten:</strong> __________________________</p>
+<hr />
+<h1 id="mission-summary">17. Mission Summary</h1>
+<pre class="text"><code>PROBLEM
+   ↓
+DATA
+   ↓
+FEATURE + LABEL
+   ↓
+TRAINING
+   ↓
+MODEL
+   ↓
+NEW DATA
+   ↓
+INFERENCE
+   ↓
+PREDICTION</code></pre>
+<section id="final-thought" class="callout think">
+<h3>Final Thought</h3>
+<p><strong>Tidak semua masalah membutuhkan Machine
+Learning.</strong></p>
+<p>Seorang engineer yang baik tidak hanya mengetahui <strong>bagaimana
+menggunakan ML</strong>, tetapi juga mengetahui <strong>kapan ML memang
+layak digunakan</strong>.</p>
+</section>
+<hr />
+<h1 id="next-mission">NEXT MISSION</h1>
+<h2 id="ml-mission-02-meet-your-data">ML Mission 02 — Meet Your
+Data</h2>
+<h3 id="before-machines-learn-engineers-must-understand-the-data"><em>Before
+Machines Learn, Engineers Must Understand the Data</em></h3>
+<p><span class="badge">Next Achievement: 🏅 Data Explorer</span></p>
+<hr />
+<h2 id="ml-marathon-principle">ML Marathon Principle</h2>
+<blockquote>
+<p><strong>READ. THINK. BUILD. PROVE. UNLOCK.</strong></p>
+</blockquote>
+</body>
+</html>

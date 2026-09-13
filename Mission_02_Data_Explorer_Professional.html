@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Machine Learning Marathon" />
+  <title>ML Mission 02 — Meet Your Data</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">
+:root {
+--navy: #16324F;
+--blue: #2F6690;
+--mint: #EAF7F1;
+--gold: #F4C95D;
+--paper: #FAFBFC;
+--ink: #1F2933;
+--border: #D8E0E8;
+}
+html {
+scroll-behavior: smooth;
+}
+body {
+max-width: 1100px;
+margin: 0 auto;
+padding: 32px 44px 80px;
+background: var(--paper);
+color: var(--ink);
+font-family: "Segoe UI", Arial, sans-serif;
+line-height: 1.65;
+}
+h1, h2, h3, h4 {
+color: var(--navy);
+}
+h1 {
+border-bottom: 4px solid var(--gold);
+padding-bottom: .35rem;
+margin-top: 2.4rem;
+}
+h2 {
+border-bottom: 1px solid var(--border);
+padding-bottom: .25rem;
+margin-top: 2rem;
+}
+h3 {
+margin-top: 1.4rem;
+}
+p, li {
+font-size: 1rem;
+}
+a {
+color: var(--blue);
+}
+table {
+width: 100%;
+border-collapse: collapse;
+margin: 1rem 0 1.5rem;
+}
+th {
+background: var(--navy);
+color: white;
+}
+th, td {
+border: 1px solid var(--border);
+padding: 8px 10px;
+vertical-align: top;
+}
+pre {
+overflow-x: auto;
+padding: 14px 16px;
+background: #F1F4F7;
+border: 1px solid var(--border);
+border-radius: 8px;
+}
+code {
+font-family: Consolas, "Courier New", monospace;
+}
+blockquote {
+background: #F2F7FB;
+border-left: 5px solid var(--blue);
+padding: 10px 14px;
+margin: 1rem 0;
+}
+.callout {
+border-radius: 10px;
+padding: 14px 16px;
+margin: 16px 0;
+border: 1px solid var(--border);
+}
+.mission {
+background: #EEF6FF;
+border-left: 6px solid var(--blue);
+}
+.think {
+background: #FFF9E8;
+border-left: 6px solid var(--gold);
+}
+.success {
+background: var(--mint);
+border-left: 6px solid #4B9B78;
+}
+.challenge {
+background: #F7F1FF;
+border-left: 6px solid #7A5AA6;
+}
+.danger {
+background: #FFF0F0;
+border-left: 6px solid #B84A4A;
+}
+.badge {
+display: inline-block;
+background: var(--navy);
+color: white;
+padding: 5px 10px;
+border-radius: 999px;
+font-weight: 700;
+}
+.cover {
+background: linear-gradient(135deg, #16324F, #2F6690);
+color: white;
+padding: 34px 28px;
+border-radius: 16px;
+margin: 30px 0 24px;
+break-before: page;
+page-break-before: always;
+}
+.cover:first-of-type {
+break-before: auto;
+page-break-before: auto;
+}
+.cover h1,
+.cover h2,
+.cover h3 {
+color: white;
+border: 0;
+margin: .2rem 0;
+}
+.cover .gold {
+color: var(--gold);
+font-weight: 700;
+}
+#TOC {
+background: white;
+border: 1px solid var(--border);
+border-radius: 12px;
+padding: 20px 28px;
+margin: 30px 0 40px;
+}
+#TOC ul {
+list-style: none;
+padding-left: 1rem;
+}
+#TOC > ul {
+padding-left: 0;
+}
+
+@media print {
+body {
+max-width: none;
+padding: 0;
+background: white;
+font-size: 10.5pt;
+}
+.cover {
+break-before: page;
+page-break-before: always;
+min-height: 75vh;
+}
+pre, table, blockquote, .callout {
+break-inside: avoid;
+page-break-inside: avoid;
+}
+h1, h2, h3 {
+break-after: avoid;
+page-break-after: avoid;
+}
+a {
+color: inherit;
+text-decoration: none;
+}
+@page {
+size: A4;
+margin: 18mm 16mm 18mm 16mm;
+}
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ML Mission 02 — Meet Your Data</h1>
+<p class="subtitle">Before Machines Learn, Engineers Must Understand the
+Data</p>
+<p class="author">Machine Learning Marathon</p>
+</header>
+<style>
+:root{
+--navy:#16324F;
+--blue:#2F6690;
+--sky:#D9EAF7;
+--mint:#EAF7F1;
+--gold:#F4C95D;
+--paper:#FAFBFC;
+--ink:#1F2933;
+--muted:#5F6C7B;
+--border:#D8E0E8;
+}
+body{
+background:var(--paper);
+color:var(--ink);
+font-family:"Segoe UI",Arial,sans-serif;
+line-height:1.65;
+}
+h1,h2,h3{color:var(--navy);}
+h1{border-bottom:4px solid var(--gold);padding-bottom:.35rem;}
+h2{border-bottom:1px solid var(--border);padding-bottom:.25rem;margin-top:2rem;}
+table{width:100%;border-collapse:collapse;}
+th{background:var(--navy);color:white;}
+th,td{border:1px solid var(--border);padding:8px 10px;}
+blockquote{background:#F2F7FB;border-left:5px solid var(--blue);padding:10px 14px;margin:1rem 0;}
+.callout{border-radius:10px;padding:14px 16px;margin:16px 0;border:1px solid var(--border);}
+.mission{background:#EEF6FF;border-left:6px solid var(--blue);}
+.think{background:#FFF9E8;border-left:6px solid var(--gold);}
+.success{background:var(--mint);border-left:6px solid #4B9B78;}
+.challenge{background:#F7F1FF;border-left:6px solid #7A5AA6;}
+.badge{display:inline-block;background:var(--navy);color:white;padding:5px 10px;border-radius:999px;font-weight:700;}
+.small{color:var(--muted);font-size:.95em;}
+.cover{
+background:linear-gradient(135deg,#16324F,#2F6690);
+color:white;
+padding:34px 28px;
+border-radius:16px;
+margin-bottom:24px;
+}
+.cover h1,.cover h2,.cover h3{color:white;border:0;margin:.2rem 0;}
+.cover .gold{color:#F4C95D;font-weight:700;}
+</style>
+<section id="ml-mission-02" class="cover">
+<h1>ML MISSION 02</h1>
+<h2 id="meet-your-data">Meet Your Data</h2>
+<h3 id="before-machines-learn-engineers-must-understand-the-data"><em>Before
+Machines Learn, Engineers Must Understand the Data</em></h3>
+<p><strong>Stage 1 — Understand the Data</strong></p>
+<p><span class="badge">🏅 Achievement: Data Explorer</span></p>
+<p class="gold">
+READ · THINK · BUILD · PROVE · UNLOCK
+</p>
+</section>
+<section id="big-question" class="callout mission">
+<h3>🎯 BIG QUESTION</h3>
+<p><strong>Bisakah kita mempercayai model Machine Learning jika kita
+belum memahami datanya?</strong></p>
+</section>
+<hr />
+<h1 id="mission-brief">1. Mission Brief</h1>
+<p>Pada Mission 01, Anda telah mengenal alur dasar:</p>
+<pre class="text"><code>Problem → Data → Training → Model → Inference → Prediction</code></pre>
+<p>Sekarang kita berhenti sejenak pada bagian yang paling sering
+diremehkan:</p>
+<h1 id="data"><strong>DATA</strong></h1>
+<p>Sebelum memilih algoritma, sebelum training, bahkan sebelum membahas
+accuracy, seorang engineer harus memahami data yang akan digunakan.</p>
+<p>Pada mission ini Anda akan belajar membaca dataset seperti seorang
+investigator:</p>
+<ul>
+<li>apa yang diukur;</li>
+<li>mana feature dan mana target;</li>
+<li>berapa banyak sample;</li>
+<li>bagaimana rentang nilainya;</li>
+<li>apakah ada pola;</li>
+<li>apakah ada nilai yang mencurigakan;</li>
+<li>dan apakah visualisasi mendukung dugaan Anda.</li>
+</ul>
+<blockquote>
+<p><strong>Good models begin with understood data.</strong></p>
+</blockquote>
+<hr />
+<h1 id="learning-outcomes">2. Learning Outcomes</h1>
+<p>Setelah menyelesaikan mission ini, Anda diharapkan mampu:</p>
+<ol type="1">
+<li>menjelaskan struktur dasar sebuah dataset;</li>
+<li>membedakan <strong>sample, feature, dan target</strong>;</li>
+<li>mengenali tipe data numerik dan kategorikal;</li>
+<li>menghitung statistik dasar: minimum, maksimum, mean, dan
+median;</li>
+<li>menggunakan <code>pandas</code> untuk membaca dan mengeksplorasi
+dataset;</li>
+<li>membuat visualisasi sederhana menggunakan
+<code>matplotlib</code>;</li>
+<li>mengidentifikasi pola awal dari data;</li>
+<li>menjelaskan apakah suatu feature tampak relevan terhadap
+target.</li>
+</ol>
+<hr />
+<h1 id="before-you-start">3. Before You Start</h1>
+<section id="reading-goal" class="callout think">
+<h3>📖 Reading Goal</h3>
+<p>Saat membaca bagian ini, jangan fokus menghafal fungsi Python.<br />
+Fokus pada pertanyaan: <strong>“Apa yang ingin saya ketahui dari data
+ini?”</strong></p>
+</section>
+<h2 id="what-is-a-dataset">3.1 What Is a Dataset?</h2>
+<p>Dataset adalah kumpulan data yang digunakan untuk analisis atau
+pembelajaran mesin.</p>
+<p>Contoh:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Temperature</th>
+<th style="text-align: right;">Humidity</th>
+<th style="text-align: right;">Light</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">450</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">420</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">320</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">88</td>
+<td style="text-align: right;">250</td>
+<td>Critical</td>
+</tr>
+</tbody>
+</table>
+<p>Setiap <strong>baris</strong> adalah satu sample.</p>
+<p>Setiap <strong>kolom</strong> adalah satu variabel.</p>
+<p>Pada contoh tersebut:</p>
+<pre class="text"><code>Features:
+- Temperature
+- Humidity
+- Light
+
+Target:
+- Condition</code></pre>
+<hr />
+<h1 id="samples-features-and-targets">4. Samples, Features, and
+Targets</h1>
+<h2 id="sample">4.1 Sample</h2>
+<p>Satu <strong>sample</strong> adalah satu pengamatan.</p>
+<p>Misalnya:</p>
+<pre class="text"><code>[34, 82, 320, &quot;Warning&quot;]</code></pre>
+<p>berarti satu kondisi sistem pada satu waktu tertentu.</p>
+<h2 id="feature">4.2 Feature</h2>
+<p>Feature adalah informasi input yang digunakan untuk memahami atau
+memprediksi target.</p>
+<p>Contoh:</p>
+<ul>
+<li>temperature;</li>
+<li>humidity;</li>
+<li>vibration;</li>
+<li>current;</li>
+<li>light intensity;</li>
+<li>water level.</li>
+</ul>
+<h2 id="target">4.3 Target</h2>
+<p>Target adalah nilai yang ingin diprediksi atau dijelaskan.</p>
+<p>Contoh:</p>
+<pre class="text"><code>Condition = Normal / Warning / Critical</code></pre>
+<p>atau:</p>
+<pre class="text"><code>Power = 125.4 W</code></pre>
+<hr />
+<h1 id="numerical-and-categorical-data">5. Numerical and Categorical
+Data</h1>
+<p>Secara sederhana, data dapat dibagi menjadi:</p>
+<h2 id="numerical">Numerical</h2>
+<p>Berupa angka.</p>
+<p>Contoh:</p>
+<pre class="text"><code>Temperature = 32.5
+Current = 3.8
+Humidity = 75</code></pre>
+<h2 id="categorical">Categorical</h2>
+<p>Berupa kategori atau kelas.</p>
+<p>Contoh:</p>
+<pre class="text"><code>Condition = Normal
+Mode = Auto
+Machine = Motor_A</code></pre>
+<section id="remember" class="callout success">
+<h3>💡 Remember</h3>
+<p>Angka tidak selalu berarti “lebih besar lebih baik”, dan kategori
+tidak selalu bisa langsung diproses sebagai angka.</p>
+<p>Memahami makna fisik setiap feature sangat penting.</p>
+</section>
+<hr />
+<h1 id="why-statistics-matter">6. Why Statistics Matter</h1>
+<p>Sebelum menggambar grafik, kita dapat melihat ringkasan
+statistik.</p>
+<p>Beberapa statistik dasar:</p>
+<table>
+<thead>
+<tr>
+<th>Statistik</th>
+<th>Arti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>Nilai terkecil</td>
+</tr>
+<tr>
+<td><strong>Maximum</strong></td>
+<td>Nilai terbesar</td>
+</tr>
+<tr>
+<td><strong>Mean</strong></td>
+<td>Nilai rata-rata</td>
+</tr>
+<tr>
+<td><strong>Median</strong></td>
+<td>Nilai tengah setelah data diurutkan</td>
+</tr>
+<tr>
+<td><strong>Count</strong></td>
+<td>Jumlah sample</td>
+</tr>
+</tbody>
+</table>
+<p>Misalnya temperature:</p>
+<pre class="text"><code>28, 29, 30, 31, 70</code></pre>
+<p>Mean dapat meningkat cukup besar karena angka 70.</p>
+<p>Median lebih tahan terhadap nilai ekstrem.</p>
+<p>Ini akan menjadi penting saat kita masuk ke <strong>outlier</strong>
+pada mission berikutnya.</p>
+<hr />
+<h1 id="think-first-read-the-dataset-without-coding">7. THINK FIRST —
+Read the Dataset Without Coding</h1>
+<p>Perhatikan dataset berikut.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Sample</th>
+<th style="text-align: right;">Temperature</th>
+<th style="text-align: right;">Humidity</th>
+<th style="text-align: right;">Vibration</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">0.20</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">0.25</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">0.35</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">0.70</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">1.00</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">1.40</td>
+<td>Fault</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: right;">1.70</td>
+<td>Fault</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">1.95</td>
+<td>Fault</td>
+</tr>
+</tbody>
+</table>
+<p>Diskusikan bersama pasangan Anda.</p>
+<h3 id="pertanyaan">Pertanyaan</h3>
+<ol type="1">
+<li>Feature apa yang tampak paling berubah ketika kondisi memburuk?</li>
+<li>Apakah humidity juga berubah?</li>
+<li>Pada rentang temperature berapa kondisi mulai menjadi
+<code>Warning</code>?</li>
+<li>Apakah ada sample yang menurut Anda terasa aneh?</li>
+<li>Jika ada data baru:</li>
+</ol>
+<pre class="text"><code>Temperature = 65
+Humidity    = 85
+Vibration   = 1.55</code></pre>
+<p>menurut Anda kondisinya apa?</p>
+<hr />
+<h1 id="guided-exploration-reading-data-with-pandas">8. Guided
+Exploration — Reading Data with Pandas</h1>
+<p>Kita akan menggunakan <code>pandas</code>.</p>
+<h2 id="import-library">8.1 Import Library</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div>
+<hr />
+<h2 id="create-a-small-dataset">8.2 Create a Small Dataset</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;temperature&quot;</span>: [<span class="dv">31</span>, <span class="dv">33</span>, <span class="dv">36</span>, <span class="dv">49</span>, <span class="dv">55</span>, <span class="dv">62</span>, <span class="dv">68</span>, <span class="dv">72</span>],</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;humidity&quot;</span>:    [<span class="dv">70</span>, <span class="dv">72</span>, <span class="dv">75</span>, <span class="dv">78</span>, <span class="dv">80</span>, <span class="dv">84</span>, <span class="dv">87</span>, <span class="dv">89</span>],</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;vibration&quot;</span>:   [<span class="fl">0.20</span>, <span class="fl">0.25</span>, <span class="fl">0.35</span>, <span class="fl">0.70</span>, <span class="fl">1.00</span>, <span class="fl">1.40</span>, <span class="fl">1.70</span>, <span class="fl">1.95</span>],</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;condition&quot;</span>:   [<span class="st">&quot;Normal&quot;</span>, <span class="st">&quot;Normal&quot;</span>, <span class="st">&quot;Normal&quot;</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;Warning&quot;</span>, <span class="st">&quot;Warning&quot;</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;Fault&quot;</span>, <span class="st">&quot;Fault&quot;</span>, <span class="st">&quot;Fault&quot;</span>]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data)</span></code></pre></div>
+<hr />
+<h2 id="view-the-data">8.3 View the Data</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div>
+<p>Kemudian:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head())</span></code></pre></div>
+<h3 id="pertanyaan-1">Pertanyaan</h3>
+<p>Apa perbedaan <code>print(df)</code> dan <code>df.head()</code>?</p>
+<hr />
+<h1 id="inspect-the-structure">9. Inspect the Structure</h1>
+<p>Gunakan:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span></code></pre></div>
+<p>Jika hasilnya:</p>
+<pre class="text"><code>(8, 4)</code></pre>
+<p>artinya dataset memiliki:</p>
+<pre class="text"><code>8 rows
+4 columns</code></pre>
+<p>Coba juga:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.columns)</span></code></pre></div>
+<p>dan:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)</span></code></pre></div>
+<h3 id="catat-hasilnya">Catat hasilnya</h3>
+<p>Jumlah sample: ___________________</p>
+<p>Jumlah kolom: ___________________</p>
+<p>Kolom numerik: ___________________</p>
+<p>Kolom kategorikal: _______________</p>
+<hr />
+<h1 id="basic-statistics">10. Basic Statistics</h1>
+<p>Gunakan:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.describe())</span></code></pre></div>
+<p>Perhatikan nilai:</p>
+<ul>
+<li>count;</li>
+<li>mean;</li>
+<li>min;</li>
+<li>max;</li>
+<li>median (50%).</li>
+</ul>
+<p>Lengkapi tabel berikut.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: right;">Minimum</th>
+<th style="text-align: right;">Maximum</th>
+<th style="text-align: right;">Mean</th>
+<th style="text-align: right;">Median</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Temperature</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>Humidity</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>Vibration</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="diskusikan">Diskusikan</h3>
+<p>Feature mana yang memiliki rentang terbesar?</p>
+<p>Apakah rentang besar selalu berarti feature tersebut paling
+penting?</p>
+<hr />
+<h1 id="count-the-classes">11. Count the Classes</h1>
+<p>Gunakan:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&quot;condition&quot;</span>].value_counts())</span></code></pre></div>
+<p>Catat jumlah masing-masing kelas.</p>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th style="text-align: right;">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Normal</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>Warning</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>Fault</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<section id="key-insight" class="callout success">
+<h3>💡 Key Insight</h3>
+<p>Jumlah sample pada setiap kelas dapat memengaruhi proses
+training.<br />
+Dataset dengan satu kelas yang jauh lebih banyak dari kelas lain disebut
+<strong>imbalanced dataset</strong>.</p>
+<p>Kita akan membahas dampaknya lebih jauh pada mission berikutnya.</p>
+</section>
+<hr />
+<h1 id="visualise-the-data">12. Visualise the Data</h1>
+<p>Angka sering kali lebih mudah dipahami ketika divisualisasikan.</p>
+<h2 id="temperature">12.1 Temperature</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(<span class="bu">range</span>(<span class="bu">len</span>(df)), df[<span class="st">&quot;temperature&quot;</span>])</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Sample&quot;</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Temperature&quot;</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&quot;Temperature per Sample&quot;</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<h2 id="vibration">12.2 Vibration</h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(<span class="bu">range</span>(<span class="bu">len</span>(df)), df[<span class="st">&quot;vibration&quot;</span>])</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Sample&quot;</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Vibration&quot;</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&quot;Vibration per Sample&quot;</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<hr />
+<h1 id="compare-two-features">13. Compare Two Features</h1>
+<p>Sekarang buat hubungan antara temperature dan vibration.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(df[<span class="st">&quot;temperature&quot;</span>], df[<span class="st">&quot;vibration&quot;</span>])</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Temperature&quot;</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Vibration&quot;</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&quot;Temperature vs Vibration&quot;</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<h3 id="pertanyaan-2">Pertanyaan</h3>
+<ol type="1">
+<li>Apakah terlihat hubungan antara temperature dan vibration?</li>
+<li>Apakah vibration cenderung meningkat saat temperature
+meningkat?</li>
+<li>Apakah grafik ini membuktikan hubungan sebab-akibat?</li>
+</ol>
+<blockquote>
+<p><strong>Catatan:</strong> Korelasi atau pola pada grafik tidak
+otomatis membuktikan bahwa satu variabel menyebabkan variabel lain.</p>
+</blockquote>
+<hr />
+<h1 id="think-like-an-engineer">14. THINK LIKE AN ENGINEER</h1>
+<section id="jangan-hanya-bertanya-apa-kata-grafik" class="callout think">
+<h3>🧠 Jangan hanya bertanya “Apa kata grafik?”</h3>
+<p>Tanyakan juga: <strong>“Apakah pola ini masuk akal secara
+fisik?”</strong></p>
+</section>
+<p>Misalnya:</p>
+<p>Jika sebuah motor semakin panas dan vibrasinya meningkat, apakah
+secara engineering hal tersebut masuk akal sebagai tanda kondisi
+memburuk?</p>
+<p>Jawaban Anda:</p>
+<p>……………………………………………………………………</p>
+<p>……………………………………………………………………</p>
+<hr />
+<h1 id="your-mission">15. YOUR MISSION 🚀</h1>
+<section id="mission-scenario" class="callout mission">
+<h3>Mission Scenario</h3>
+<p>Anda menjadi engineer yang menerima data monitoring sebuah sistem
+pompa.</p>
+<p>Sebelum membuat model Machine Learning, tim Anda harus
+<strong>memahami dataset terlebih dahulu</strong>.</p>
+</section>
+<p>Gunakan dataset berikut.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Water Level</th>
+<th style="text-align: right;">Flow Rate</th>
+<th style="text-align: right;">Current</th>
+<th style="text-align: right;">Temperature</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">8.5</td>
+<td style="text-align: right;">1.8</td>
+<td style="text-align: right;">30</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">1.9</td>
+<td style="text-align: right;">31</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">7.9</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">32</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">7.5</td>
+<td style="text-align: right;">2.2</td>
+<td style="text-align: right;">34</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">7.0</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">37</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">6.4</td>
+<td style="text-align: right;">2.8</td>
+<td style="text-align: right;">40</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">5.8</td>
+<td style="text-align: right;">3.2</td>
+<td style="text-align: right;">44</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">3.6</td>
+<td style="text-align: right;">48</td>
+<td>Fault</td>
+</tr>
+<tr>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">4.2</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">52</td>
+<td>Fault</td>
+</tr>
+<tr>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">3.5</td>
+<td style="text-align: right;">4.5</td>
+<td style="text-align: right;">57</td>
+<td>Fault</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tugas-tim">Tugas Tim</h3>
+<ol type="1">
+<li>Masukkan dataset ke dalam <code>pandas DataFrame</code>.</li>
+<li>Tentukan:
+<ul>
+<li>jumlah sample;</li>
+<li>jumlah feature;</li>
+<li>target.</li>
+</ul></li>
+<li>Tampilkan <code>head()</code>.</li>
+<li>Tampilkan <code>dtypes</code>.</li>
+<li>Hitung statistik dasar dengan <code>describe()</code>.</li>
+<li>Hitung jumlah setiap kelas <code>Condition</code>.</li>
+<li>Buat minimal <strong>dua visualisasi</strong>.</li>
+<li>Temukan minimal <strong>tiga pola atau insight</strong>.</li>
+<li>Tentukan feature mana yang menurut tim Anda paling menarik untuk
+digunakan dalam model.</li>
+<li>Jelaskan alasan engineering Anda.</li>
+</ol>
+<hr />
+<h1 id="mission-report">16. Mission Report</h1>
+<h2 id="dataset-identity">Dataset Identity</h2>
+<p><strong>Jumlah sample:</strong> __________________________</p>
+<p><strong>Jumlah feature:</strong> _________________________</p>
+<p><strong>Target:</strong> _________________________________</p>
+<h2 id="feature-list">Feature List</h2>
+<ol type="1">
+<li><hr /></li>
+<li><hr /></li>
+<li><hr /></li>
+<li><hr /></li>
+</ol>
+<h2 id="three-data-insights">Three Data Insights</h2>
+<h3 id="insight-1">Insight 1</h3>
+<p>……………………………………………………………………</p>
+<h3 id="insight-2">Insight 2</h3>
+<p>……………………………………………………………………</p>
+<h3 id="insight-3">Insight 3</h3>
+<p>……………………………………………………………………</p>
+<h2 id="most-interesting-feature">Most Interesting Feature</h2>
+<p>Feature: ______________________________</p>
+<p>Alasan:</p>
+<p>……………………………………………………………………</p>
+<p>……………………………………………………………………</p>
+<hr />
+<h1 id="challenge">17. CHALLENGE+ ⚡</h1>
+<section id="untuk-tim-yang-sudah-menyelesaikan-mission-utama" class="callout challenge">
+<h3>Untuk tim yang sudah menyelesaikan mission utama</h3>
+</section>
+<h2 id="challenge-a-correlation">Challenge A — Correlation</h2>
+<p>Jalankan:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.corr(numeric_only<span class="op">=</span><span class="va">True</span>))</span></code></pre></div>
+<p>Feature mana yang memiliki hubungan paling kuat satu sama lain?</p>
+<p>Apakah korelasi tersebut masuk akal?</p>
+<hr />
+<h2 id="challenge-b-new-visualisation">Challenge B — New
+Visualisation</h2>
+<p>Buat salah satu grafik berikut:</p>
+<ul>
+<li>histogram;</li>
+<li>line plot;</li>
+<li>scatter plot dengan pasangan feature lain.</li>
+</ul>
+<p>Tuliskan satu insight baru yang hanya terlihat setelah grafik
+dibuat.</p>
+<hr />
+<h2 id="challenge-c-predict-before-ml">Challenge C — Predict Before
+ML</h2>
+<p>Tanpa membuat model ML, prediksi kondisi data berikut:</p>
+<pre class="text"><code>Water Level = 31
+Flow Rate   = 4.7
+Current     = 3.8
+Temperature = 50</code></pre>
+<p>Prediction Anda: ___________________</p>
+<p>Jelaskan pola yang Anda gunakan.</p>
+<hr />
+<h1 id="prove-it">18. PROVE IT ✅</h1>
+<section id="untuk-memperoleh-badge-tunjukkan-bahwa-anda-benar-benar-memahami-data." class="callout success">
+<h3>Untuk memperoleh badge, tunjukkan bahwa Anda benar-benar memahami
+data.</h3>
+</section>
+<p>Dosen/asisten dapat memilih salah satu pertanyaan berikut.</p>
+<ol type="1">
+<li>Berapa jumlah sample pada dataset Anda?</li>
+<li>Mana feature dan mana target?</li>
+<li>Apa fungsi <code>df.head()</code>?</li>
+<li>Apa informasi yang diberikan <code>df.shape</code>?</li>
+<li>Apa arti <code>mean</code>?</li>
+<li>Apa perbedaan mean dan median?</li>
+<li>Tunjukkan feature dengan nilai maksimum terbesar.</li>
+<li>Tunjukkan distribusi kelas <code>Condition</code>.</li>
+<li>Jelaskan satu pola yang Anda temukan dari grafik.</li>
+<li>Mengapa kita perlu memahami data sebelum training?</li>
+<li>Apakah grafik membuktikan hubungan sebab-akibat?</li>
+<li>Pilih satu feature dan jelaskan makna fisiknya.</li>
+</ol>
+<hr />
+<h1 id="achievement-criteria">19. Achievement Criteria</h1>
+<table>
+<thead>
+<tr>
+<th>Kriteria</th>
+<th>Bukti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>READ</strong></td>
+<td>Mampu mengenali struktur dataset</td>
+</tr>
+<tr>
+<td><strong>EXPLORE</strong></td>
+<td>Menghasilkan statistik dan visualisasi</td>
+</tr>
+<tr>
+<td><strong>INTERPRET</strong></td>
+<td>Menemukan minimal tiga insight</td>
+</tr>
+<tr>
+<td><strong>PROVE</strong></td>
+<td>Mampu menjelaskan hasil eksplorasi</td>
+</tr>
+</tbody>
+</table>
+<pre class="text"><code>READ + EXPLORE + INTERPRET + PROVE
+                 ↓
+        ACHIEVEMENT UNLOCKED</code></pre>
+<hr />
+<h1 id="reflection">20. Reflection</h1>
+<h3 id="apa-yang-paling-mengejutkan-dari-dataset-yang-anda-analisis">1.
+Apa yang paling mengejutkan dari dataset yang Anda analisis?</h3>
+<p>……………………………………………………………………</p>
+<h3 id="apakah-semua-feature-tampak-sama-pentingnya">2. Apakah semua
+feature tampak sama pentingnya?</h3>
+<p>……………………………………………………………………</p>
+<h3 id="mengapa-visualisasi-membantu-dibanding-hanya-melihat-tabel-angka">3.
+Mengapa visualisasi membantu dibanding hanya melihat tabel angka?</h3>
+<p>……………………………………………………………………</p>
+<h3 id="apa-risiko-jika-engineer-langsung-melakukan-training-tanpa-memahami-dataset">4.
+Apa risiko jika engineer langsung melakukan training tanpa memahami
+dataset?</h3>
+<p>……………………………………………………………………</p>
+<hr />
+<h1 id="achievement-unlocked">21. Achievement Unlocked 🏅</h1>
+<section id="data-explorer" class="callout success">
+<h2>🏅 DATA EXPLORER</h2>
+<p><strong>You looked beyond the numbers and began to understand the
+data.</strong></p>
+</section>
+<p><strong>Status</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>COMPLETED</label></li>
+<li><label><input type="checkbox"></input>RETRY</label></li>
+<li><label><input type="checkbox"></input>NOT COMPLETED</label></li>
+</ul>
+<p><strong>Tanggal:</strong> ______________________</p>
+<p><strong>Nama Mahasiswa:</strong> ______________________________</p>
+<p><strong>Partner:</strong> _____________________________________</p>
+<p><strong>Paraf Dosen/Asisten:</strong> __________________________</p>
+<hr />
+<h1 id="mission-summary">22. Mission Summary</h1>
+<pre class="text"><code>DATASET
+   ↓
+STRUCTURE
+   ↓
+STATISTICS
+   ↓
+VISUALISATION
+   ↓
+PATTERN
+   ↓
+ENGINEERING INTERPRETATION</code></pre>
+<section id="final-thought" class="callout think">
+<h3>Final Thought</h3>
+<p><strong>Do not train a model on data you do not
+understand.</strong></p>
+<p>Machine Learning bukan hanya tentang algoritma.<br />
+Seorang engineer harus mampu membaca data, mempertanyakan data, dan
+menghubungkan pola dengan sistem fisik yang sebenarnya.</p>
+</section>
+<hr />
+<h1 id="next-mission">NEXT MISSION</h1>
+<h2 id="ml-mission-03-clean-the-mess">ML Mission 03 — Clean the
+Mess</h2>
+<h3 id="real-world-data-is-rarely-ready-to-learn"><em>Real-World Data Is
+Rarely Ready to Learn</em></h3>
+<p><span class="badge">Next Achievement: 🏅 Data Cleaner</span></p>
+<hr />
+<h2 id="ml-marathon-principle">ML Marathon Principle</h2>
+<blockquote>
+<p><strong>READ. THINK. BUILD. PROVE. UNLOCK.</strong></p>
+</blockquote>
+</body>
+</html>
