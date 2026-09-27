@@ -53,8 +53,8 @@ $$
 | Simbol | Arti |
 |---|---|
 | $\hat{y}$ | nilai hasil prediksi |
-| $x_j$ | feature ke-$j$ |
-| $w_j$ | weight / coefficient feature ke-$j$ |
+| $x_j$ | feature ke-j |
+| $w_j$ | weight / coefficient feature ke-j |
 | $b$ | bias / intercept |
 | $n$ | jumlah feature |
 
