@@ -4,7 +4,7 @@ Rumus menggunakan sintaks matematika yang disederhanakan agar lebih stabil
 saat dirender langsung pada halaman Markdown GitHub.
 -->
 
-# Slide 1 — Multiple Feature Regression
+# 1 — Multiple Feature Regression
 
 ## Apa itu Multiple Feature Regression?
 
@@ -32,7 +32,7 @@ $$
 
 ---
 
-# Slide 2 — Persamaan Multiple Linear Regression
+# 2 — Persamaan Multiple Linear Regression
 
 Untuk $n$ buah feature:
 
@@ -70,7 +70,7 @@ yang membuat hasil prediction sedekat mungkin dengan nilai actual.
 
 ---
 
-# Slide 3 — Contoh pada Sistem Kelistrikan
+# 3 — Contoh pada Sistem Kelistrikan
 
 Misalkan kita ingin memprediksi konsumsi energi:
 
@@ -115,7 +115,7 @@ $$
 
 ---
 
-# Slide 4 — Apa Arti Weight?
+# 4 — Apa Arti Weight?
 
 Perhatikan:
 
@@ -165,7 +165,7 @@ maka kontribusi linear feature tersebut terhadap prediction relatif kecil.
 
 ---
 
-# Slide 5 — Bias / Intercept
+# 5 — Bias / Intercept
 
 Persamaan:
 
@@ -199,7 +199,7 @@ Jadi bias terutama berfungsi sebagai **konstanta model**.
 
 ---
 
-# Slide 6 — Actual, Predicted, dan Error
+# 6 — Actual, Predicted, dan Error
 
 Untuk setiap sample:
 
@@ -239,7 +239,7 @@ $$
 
 ---
 
-# Slide 7 — Bagaimana Model Belajar?
+# 7 — Bagaimana Model Belajar?
 
 Linear Regression mencari coefficient yang membuat total error sekecil mungkin.
 
@@ -276,7 +276,7 @@ yang menghasilkan **sum of squared errors** paling kecil.
 
 ---
 
-# Slide 8 — Bentuk Matriks
+# 8 — Bentuk Matriks
 
 Multiple Linear Regression dapat ditulis:
 
@@ -307,7 +307,7 @@ Setiap kolom pada $\mathbf{X}$ mewakili satu feature.
 
 ---
 
-# Slide 9 — Evaluasi Model: MAE
+# 9 — Evaluasi Model: MAE
 
 ## MAE — Mean Absolute Error
 
@@ -334,7 +334,7 @@ maka secara rata-rata prediction meleset sekitar **0.5 kWh**.
 
 ---
 
-# Slide 10 — Evaluasi Model: MSE dan RMSE
+# 10 — Evaluasi Model: MSE dan RMSE
 
 ## MSE — Mean Squared Error
 
@@ -378,7 +378,7 @@ $$
 
 ---
 
-# Slide 11 — Konsep Utama yang Perlu Diingat
+# 11 — Konsep Utama yang Perlu Diingat
 
 ```text
 Multiple Features
@@ -402,7 +402,7 @@ MAE / MSE / RMSE
 
 ---
 
-# Slide 12 — Ringkasan
+# 12 — Ringkasan
 
 Pada Multiple Feature Regression:
 
