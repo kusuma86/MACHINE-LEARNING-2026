@@ -1,4 +1,10 @@
-# 1 — Multiple Feature Regression
+<!--
+GitHub-compatible version.
+Rumus menggunakan sintaks matematika yang disederhanakan agar lebih stabil
+saat dirender langsung pada halaman Markdown GitHub.
+-->
+
+# Slide 1 — Multiple Feature Regression
 
 ## Apa itu Multiple Feature Regression?
 
@@ -26,22 +32,20 @@ $$
 
 ---
 
-# 2 — Persamaan Multiple Linear Regression
+# Slide 2 — Persamaan Multiple Linear Regression
 
 Untuk $n$ buah feature:
 
+**Persamaan Multiple Linear Regression:**
+
 $$
-\boxed{
 \hat{y}=b+\sum_{j=1}^{n} w_jx_j
-}
 $$
 
 atau:
 
 $$
-\boxed{
 \hat{y}=b+w_1x_1+w_2x_2+w_3x_3+\cdots+w_nx_n
-}
 $$
 
 ### Keterangan
@@ -66,50 +70,29 @@ yang membuat hasil prediction sedekat mungkin dengan nilai actual.
 
 ---
 
-# 3 — Contoh pada Sistem Kelistrikan
+# Slide 3 — Contoh pada Sistem Kelistrikan
 
 Misalkan kita ingin memprediksi konsumsi energi:
 
 $$
-\hat{E}
-=
-b+
-w_1V+
-w_2I+
-w_3H+
-w_4T+
-w_5PF
+\hat{E}=b+w_1V+w_2I+w_3H+w_4T+w_5PF
 $$
 
 dengan:
 
-$$
-\begin{aligned}
-E &= \text{Energy Consumption (kWh)}\\
-V &= \text{Voltage (V)}\\
-I &= \text{Current (A)}\\
-H &= \text{Operating Hours (hour)}\\
-T &= \text{Ambient Temperature (°C)}\\
-PF &= \text{Power Factor}
-\end{aligned}
-$$
+Keterangan:
+
+- $E$ = Energy Consumption (kWh)
+- $V$ = Voltage (V)
+- $I$ = Current (A)
+- $H$ = Operating Hours (hour)
+- $T$ = Ambient Temperature (°C)
+- $PF$ = Power Factor
 
 Misalnya setelah training diperoleh:
 
 $$
-\hat{E}
-=
--12
-+
-0.02V
-+
-1.25I
-+
-1.60H
-+
-0.05T
-+
-3.2PF
+\hat{E}=-12+0.02V+1.25I+1.60H+0.05T+3.2PF
 $$
 
 Untuk kondisi:
@@ -125,21 +108,14 @@ $$
 maka:
 
 $$
-\hat{E}
-=
--12+
-0.02(220)+
-1.25(8)+
-1.60(7)+
-0.05(30)+
-3.2(0.9)
+\hat{E}=-12+0.02(220)+1.25(8)+1.60(7)+0.05(30)+3.2(0.9)
 $$
 
 > Angka coefficient pada contoh ini hanya digunakan untuk menjelaskan konsep.
 
 ---
 
-# 4 — Apa Arti Weight?
+# Slide 4 — Apa Arti Weight?
 
 Perhatikan:
 
@@ -189,7 +165,7 @@ maka kontribusi linear feature tersebut terhadap prediction relatif kecil.
 
 ---
 
-# 5 — Bias / Intercept
+# Slide 5 — Bias / Intercept
 
 Persamaan:
 
@@ -223,7 +199,7 @@ Jadi bias terutama berfungsi sebagai **konstanta model**.
 
 ---
 
-# 6 — Actual, Predicted, dan Error
+# Slide 6 — Actual, Predicted, dan Error
 
 Untuk setiap sample:
 
@@ -239,10 +215,10 @@ $$
 
 Error atau residual:
 
+**Residual / error:**
+
 $$
-\boxed{
 e_i=y_i-\hat{y}_i
-}
 $$
 
 ### Contoh
@@ -263,7 +239,7 @@ $$
 
 ---
 
-# 7 — Bagaimana Model Belajar?
+# Slide 7 — Bagaimana Model Belajar?
 
 Linear Regression mencari coefficient yang membuat total error sekecil mungkin.
 
@@ -271,11 +247,10 @@ Pendekatan yang umum digunakan adalah **Least Squares**.
 
 Model meminimalkan:
 
+**Least Squares objective:**
+
 $$
-\boxed{
-\sum_{i=1}^{m}
-(y_i-\hat{y}_i)^2
-}
+\sum_{i=1}^{m}(y_i-\hat{y}_i)^2
 $$
 
 dengan:
@@ -301,45 +276,28 @@ yang menghasilkan **sum of squared errors** paling kecil.
 
 ---
 
-# 8 — Bentuk Matriks
+# Slide 8 — Bentuk Matriks
 
 Multiple Linear Regression dapat ditulis:
 
-$$
-\boxed{
-\hat{\mathbf{y}}
-=
-\mathbf{X}\mathbf{w}+b
-}
-$$
-
-Untuk beberapa sample:
+**Bentuk matriks:**
 
 $$
-\begin{bmatrix}
-\hat{y}_1\\
-\hat{y}_2\\
-\hat{y}_3\\
-\vdots\\
-\hat{y}_m
-\end{bmatrix}
-=
-\begin{bmatrix}
-x_{11}&x_{12}&\cdots&x_{1n}\\
-x_{21}&x_{22}&\cdots&x_{2n}\\
-x_{31}&x_{32}&\cdots&x_{3n}\\
-\vdots&\vdots&\ddots&\vdots\\
-x_{m1}&x_{m2}&\cdots&x_{mn}
-\end{bmatrix}
-\begin{bmatrix}
-w_1\\
-w_2\\
-w_3\\
-\vdots\\
-w_n
-\end{bmatrix}
-+b
+\hat{\mathbf{y}} = \mathbf{X}\mathbf{w} + b
 $$
+
+Untuk beberapa sample, bentuk ringkasnya adalah:
+
+$$
+\hat{\mathbf{y}} = \mathbf{X}\mathbf{w} + b
+$$
+
+dengan:
+
+- $\mathbf{X}$ = matriks feature
+- $\mathbf{w}$ = vektor weight
+- $b$ = bias / intercept
+- $\hat{\mathbf{y}}$ = vektor hasil prediction
 
 Secara sederhana:
 
@@ -349,17 +307,15 @@ Setiap kolom pada $\mathbf{X}$ mewakili satu feature.
 
 ---
 
-# 9 — Evaluasi Model: MAE
+# Slide 9 — Evaluasi Model: MAE
 
 ## MAE — Mean Absolute Error
 
 $$
-\boxed{
-MAE=
+MAE =
 \frac{1}{m}
 \sum_{i=1}^{m}
 |y_i-\hat{y}_i|
-}
 $$
 
 ### Interpretasi
@@ -378,17 +334,15 @@ maka secara rata-rata prediction meleset sekitar **0.5 kWh**.
 
 ---
 
-# 10 — Evaluasi Model: MSE dan RMSE
+# Slide 10 — Evaluasi Model: MSE dan RMSE
 
 ## MSE — Mean Squared Error
 
 $$
-\boxed{
-MSE=
+MSE =
 \frac{1}{m}
 \sum_{i=1}^{m}
 (y_i-\hat{y}_i)^2
-}
 $$
 
 Error besar mendapatkan penalti lebih kuat karena dikuadratkan.
@@ -402,13 +356,11 @@ $$
 ## RMSE — Root Mean Squared Error
 
 $$
-\boxed{
-RMSE=
+RMSE =
 \sqrt{
 \frac{1}{m}
 \sum_{i=1}^{m}
 (y_i-\hat{y}_i)^2
-}
 }
 $$
 
@@ -426,7 +378,7 @@ $$
 
 ---
 
-# 11 — Konsep Utama yang Perlu Diingat
+# Slide 11 — Konsep Utama yang Perlu Diingat
 
 ```text
 Multiple Features
@@ -450,7 +402,7 @@ MAE / MSE / RMSE
 
 ---
 
-# 12 — Ringkasan
+# Slide 12 — Ringkasan
 
 Pada Multiple Feature Regression:
 
@@ -463,10 +415,10 @@ Pada Multiple Feature Regression:
 
 ### Persamaan utama
 
+**Persamaan Multiple Linear Regression:**
+
 $$
-\boxed{
 \hat{y}=b+\sum_{j=1}^{n} w_jx_j
-}
 $$
 
 ### Evaluasi
