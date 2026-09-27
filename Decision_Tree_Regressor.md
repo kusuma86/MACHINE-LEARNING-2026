@@ -198,14 +198,11 @@ Misalnya sebuah leaf berisi:
 maka prediction:
 
 $$
-\hat{y}
-=
-\frac{10.8+11.2+11.5}{3}
+\hat{y} = \frac{10.8+11.2+11.5}{3}
 $$
 
 $$
-\hat{y}
-\approx 11.17
+\hat{y} \approx 11.17
 $$
 
 Jadi semua sample baru yang masuk ke leaf tersebut akan mendapat prediction sekitar:
