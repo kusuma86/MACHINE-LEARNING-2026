@@ -693,32 +693,6 @@ Classification lebih masuk akal
 
 ---
 
-# 31. Quick Check
-
-### 1
-Mengapa KNN sensitif terhadap skala feature?
-
-### 2
-Apa perbedaan utama StandardScaler dan MinMaxScaler?
-
-### 3
-Mengapa scaler hanya di-`fit` pada training data?
-
-### 4
-Apakah data hasil scaling masih memiliki satuan fisik yang sama?
-
-### 5
-Apakah StandardScaler selalu lebih baik daripada MinMaxScaler?
-
----
-
-<div align="center">
-
-## THINK LIKE AN ENGINEER
-
-**Jangan hanya bertanya:**
-
-*"Apakah model bisa berjalan?"*
 
 **Tetapi juga tanyakan:**
 
