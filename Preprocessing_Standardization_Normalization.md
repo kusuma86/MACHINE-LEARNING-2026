@@ -351,6 +351,19 @@ Prinsipnya tetap sama:
 | Sensitif terhadap nilai ekstrem | Masih dapat terpengaruh | Cukup sensitif |
 | Umum digunakan | Sangat umum | Sangat umum |
 
+
+| Kondisi | Lebih cocok |
+|---|---|
+| Feature punya skala berbeda dan tidak harus dibatasi 0–1 | **Standardization** |
+| Algoritma sensitif terhadap jarak/skala | **Standardization** sering jadi pilihan awal |
+| Ingin semua feature berada pada rentang tetap, misalnya 0–1 | **Normalization / MinMaxScaler** |
+| Nilai minimum dan maksimum punya makna jelas | **Normalization** |
+| Ada outlier | **Standardization** biasanya lebih aman daripada MinMax, walau tetap bisa terpengaruh |
+| KNN, SVM, Logistic Regression | **Standardization** sering menjadi default yang baik |
+| Neural network dengan input yang diinginkan 0–1 | **Normalization** sering digunakan |
+| Decision Tree / Random Forest | Scaling biasanya **tidak terlalu diperlukan** |
+
+
 ---
 
 # 15. Ilustrasi Sederhana
