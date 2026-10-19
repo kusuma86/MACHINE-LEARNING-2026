@@ -233,6 +233,9 @@ $$
 
 **Tugas mahasiswa:** catat koefisien model, nilai prediksi tiap titik testing, dan MAE. Jelaskan makna satuan °C pada MAE.
 
+- Makna satuan °C pada MAE
+-- **Rata-rata error yang dibuat oleh modelnya adalah sebesar 0.0889°C**
+
 ---
 
 ## 7. Eksperimen D — Prediksi interaktif dari terminal serial (10 menit)
