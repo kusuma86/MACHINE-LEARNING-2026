@@ -233,8 +233,19 @@ $$
 
 **Tugas mahasiswa:** catat koefisien model, nilai prediksi tiap titik testing, dan MAE. Jelaskan makna satuan °C pada MAE.
 
-- Makna satuan °C pada MAE
--- **Rata-rata error yang dibuat oleh modelnya adalah sebesar 0.0889°C**
+### Koefisien Model
+- Intercept: 28.0222
+- Slope: 1.6667
+### Nilai prediksi tiap titik testing
+- | Waktu (menit) | Temperatur (°C) |
+|---:|---:|
+| 0 | 28.02 |
+| 2 | 31.36 |
+| 4 | 34.69 |
+| 6 | 38.02 |
+| 8 | 41.36 |
+### Makna satuan °C pada MAE
+  **Rata-rata error yang dibuat oleh modelnya adalah sebesar 0.0889°C**
 
 ---
 
