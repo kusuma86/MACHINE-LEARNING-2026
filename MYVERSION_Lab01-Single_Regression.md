@@ -237,7 +237,7 @@ $$
 - Intercept: 28.0222
 - Slope: 1.6667
 ### Nilai prediksi tiap titik testing
-- | Waktu (menit) | Temperatur (°C) |
+| Waktu (menit) | Temperatur (°C) |
 |---:|---:|
 | 0 | 28.02 |
 | 2 | 31.36 |
