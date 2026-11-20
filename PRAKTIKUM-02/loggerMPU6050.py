@@ -23,7 +23,8 @@ sensor.writeto_mem(MPU, 0x6B, b'\x01')
 time.sleep_ms(100)
 sensor.writeto_mem(MPU, 0x1A, b'\x02')  # DLPF
 sensor.writeto_mem(MPU, 0x19, b'\x04')  # 1 kHz / (1+4) = 200 Hz
-sensor.writeto_mem(MPU, 0x1C, b'\x08')  # +/- 4g
+# sensor.writeto_mem(MPU, 0x1C, b'\x08')  # +/- 4g
+sensor.writeto_mem(MPU, 0x1C, b'\x10')  # +/- 8g
 
 
 def to_signed16(hi, lo):
